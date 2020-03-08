@@ -1,0 +1,9 @@
+[Unit]
+Description=KivyBooth Photobooth Application
+
+[Service]
+Type=simple
+ExecStart=/opt/kivybooth/kivybooth.sh
+
+[Install]
+WantedBy=multi-user.target
