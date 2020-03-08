@@ -6,6 +6,8 @@ A fotobooth application based on Kivy.
 
 # Getting started
  * Kivy and its dependencies can be installed on a Raspberry Pi in a venv using the `res/kivy-setup.sh` script.
+ * After installation, try the Kivy demo from `venv/share/kivy-examples/demo/showcase`.
+ * I had to change my `~/.kivy/config.ini` for the touchscreen to work, see `res/kivy/config.ini`.
 
 
 # References
