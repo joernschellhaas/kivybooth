@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "stop",
+            "type": "shell",
+            "command": "systemctl stop kivybooth"
+        },
+        {
+            "label": "start",
+            "command": "systemctl restart kivybooth",
+            "type": "shell",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+    ]
+}

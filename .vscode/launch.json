@@ -1,0 +1,11 @@
+{
+    "configurations": [
+        {
+            "name": "kivybooth",
+            "type": "python",
+            "program": "${workspaceFolder}/main.py",
+            "request": "launch",
+            "preLaunchTask": "stop"
+        }
+    ]
+}
