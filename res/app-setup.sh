@@ -15,6 +15,9 @@ apt install --upgrade -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2
    gstreamer1.0-{omx,alsa} python3-dev libmtdev-dev \
    xclip xsel libjpeg-dev || die "Could not install Kivy dependencies"
 
+echo "Installing libgphoto..."
+apt install --upgrade -y libgphoto2-dev pkg-config || die "Could not install libgphoto"
+
 # Only create and enter venv if we are not already inside one
 [ -z "$VIRTUAL_ENV" ] && {
     echo "Setting up venv..."
@@ -24,8 +27,12 @@ apt install --upgrade -y libsdl2-dev libsdl2-image-dev libsdl2-mixer-dev libsdl2
     . $VENV_DIR/bin/activate || die "Could not enter virtual environment"
 }
 
-python -m pip install -r requirements.txt || die "Could not install pip packages"
+python -m pip install -r $(dirname $0)/requirements.txt || die "Could not install pip packages"
 
-echo "Installing libgphoto..."
-apt install --upgrade -y libgphoto2-dev pkg-config \
-    && try_pip_install gphoto2 || die "Could not install libgphoto"
+echo "Downloading fonts..."
+python - << EOF
+import kivysome
+import os.path
+kivysome.enable("https://kit.fontawesome.com/58bcf53674.js", font_folder=os.path.join(os.path.dirname(__file__), "venv", "lib", "fonts"))
+EOF
+[ $? == 0 ] || die "Could not download fonts"
