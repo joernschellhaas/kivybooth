@@ -35,6 +35,7 @@ from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.uix.screenmanager import Screen
 import glob
+import kivysome
 
 
 class ShowcaseScreen(Screen):
@@ -75,7 +76,7 @@ class ShowcaseApp(App):
 
     def go_to_screen(self, name):
         sm = self.root.ids.sm
-        sm.switch_to(self.screens[name], direction='right')
+        sm.switch_to(self.screens[name], direction='left')
         self.current_title = self.screens[name].name
 
     def go_hierarchy_previous(self):
@@ -93,4 +94,8 @@ class ShowcaseApp(App):
 
 
 if __name__ == '__main__':
+    kivysome.enable("https://kit.fontawesome.com/58bcf53674.js",
+    font_folder=os.path.join(os.path.dirname(__file__), "venv", "lib", "fonts"),
+    cached=True,
+    group=kivysome.FontGroup.SOLID)
     ShowcaseApp().run()

@@ -1,6 +1,7 @@
 #:kivy 1.8.0
 #:import KivyLexer kivy.extras.highlight.KivyLexer
 #:import Factory kivy.factory.Factory
+#:import icon kivysome.icon
 
 <ActionSpinnerOptions@SpinnerOption>
     background_color: .4, .4, .4, 1
@@ -55,7 +56,8 @@ BoxLayout:
                 on_release: app.go_hierarchy_previous()
 
             ActionButton:
-                text: 'Login'
+                markup: True
+                text: '%s Login' % icon('lock')
                 on_release: app.go_to_screen("login")
                 important: True
 
