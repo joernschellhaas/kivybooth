@@ -38,16 +38,16 @@ import glob
 import kivysome
 
 
-class ShowcaseScreen(Screen):
+class KBScreen(Screen):
     fullscreen = BooleanProperty(False)
 
     def add_widget(self, *args):
         if 'content' in self.ids:
             return self.ids.content.add_widget(*args)
-        return super(ShowcaseScreen, self).add_widget(*args)
+        return super().add_widget(*args)
 
 
-class ShowcaseApp(App):
+class KivyBoothApp(App):
 
     index = NumericProperty(-1)
     current_title = StringProperty()
@@ -58,7 +58,7 @@ class ShowcaseApp(App):
     hierarchy = ListProperty([])
 
     def build(self):
-        self.title = 'Kivybooth'
+        self.title = 'KivyBooth'
         self.load_screens()
         self.go_to_screen("idle")
         Clock.schedule_interval(self._update_clock, 1 / 60.)
@@ -98,4 +98,4 @@ if __name__ == '__main__':
     font_folder=os.path.join(os.path.dirname(__file__), "venv", "lib", "fonts"),
     cached=True,
     group=kivysome.FontGroup.SOLID)
-    ShowcaseApp().run()
+    KivyBoothApp().run()

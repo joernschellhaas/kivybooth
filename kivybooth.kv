@@ -3,24 +3,12 @@
 #:import Factory kivy.factory.Factory
 #:import icon kivysome.icon
 
-<ActionSpinnerOptions@SpinnerOption>
-    background_color: .4, .4, .4, 1
+<KBMenuButton@ActionButton>:
+    font_size: 24
+    height: 48
+    markup: True
 
-<ActionSpinner@Spinner+ActionItem>
-    canvas.before:
-        Color:
-            rgba: 0.128, 0.128, 0.128, 1
-        Rectangle:
-            size: self.size
-            pos: self.pos
-    border: 27, 20, 12, 12
-    background_normal: 'atlas://data/images/defaulttheme/action_group'
-    option_cls: Factory.ActionSpinnerOptions
-
-<ActionDropdown>:
-    on_size: self.width = '220dp'
-
-<ShowcaseScreen>:
+<KBScreen>:
     ScrollView:
         do_scroll_x: False
         do_scroll_y: False if root.fullscreen else (content.height > root.height - dp(16))
@@ -50,16 +38,15 @@ BoxLayout:
 
         ActionView:
             id: av
+            height: 36
             ActionPrevious:
                 with_previous: (False if sm.current_screen.name == 'button' else True) if sm.current_screen else False
                 title: 'Photobooth' + ('' if not app.current_title else ' - {}'.format(app.current_title))
                 on_release: app.go_hierarchy_previous()
 
-            ActionButton:
-                markup: True
+            KBMenuButton:
                 text: '%s Login' % icon('lock')
                 on_release: app.go_to_screen("login")
-                important: True
 
     ScrollView:
         id: sv

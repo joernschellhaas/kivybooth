@@ -1,0 +1,22 @@
+KBScreen:
+    name: 'Countdown'
+    fullscreen: True
+
+    BoxLayout:
+        orientation: 'vertical'
+        distance: 20
+
+        Label:
+            text: "Get ready..."
+            font_size: 60
+
+        Label:
+            id: "counter"
+            text: "0"
+            font_size: 120
+
+        Button:
+            text: 'Abort'
+            on_release: app.go_to_screen("idle")  
+
+                
