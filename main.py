@@ -36,15 +36,8 @@ from kivy.animation import Animation
 from kivy.uix.screenmanager import Screen
 import glob
 import kivysome
+from screens import *
 
-
-class KBScreen(Screen):
-    fullscreen = BooleanProperty(False)
-
-    def add_widget(self, *args):
-        if 'content' in self.ids:
-            return self.ids.content.add_widget(*args)
-        return super().add_widget(*args)
 
 
 class KivyBoothApp(App):
@@ -66,7 +59,8 @@ class KivyBoothApp(App):
     def load_screens(self):
         self.screens = {}
         for fn in glob.glob(os.path.join(os.path.dirname(__file__), "res", "screens", "*.kv")):
-            self.screens[os.path.splitext(os.path.split(fn)[1])[0]] = Builder.load_file(fn)
+            root = Builder.load_file(fn)
+            self.screens[os.path.splitext(os.path.split(fn)[1])[0]] = root
 
     def on_pause(self):
         return True

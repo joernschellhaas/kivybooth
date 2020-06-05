@@ -1,4 +1,4 @@
-KBScreen:
+CountdownScreen:
     name: 'Countdown'
     fullscreen: True
 
@@ -11,12 +11,10 @@ KBScreen:
             font_size: 60
 
         Label:
-            id: "counter"
-            text: "0"
+            id: counter_widget
+            text: "3"
             font_size: 120
 
         Button:
             text: 'Abort'
             on_release: app.go_to_screen("idle")  
-
-                
