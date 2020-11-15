@@ -37,6 +37,7 @@ from kivy.uix.screenmanager import Screen
 import glob
 import kivysome
 from screens import *
+from kivy.config import Config
 
 
 
@@ -92,4 +93,6 @@ if __name__ == '__main__':
     font_folder=os.path.join(os.path.dirname(__file__), "venv", "lib", "fonts"),
     cached=True,
     group=kivysome.FontGroup.SOLID)
+    Config.set('kivy', 'keyboard_mode', 'systemanddock')
+    Config.write()
     KivyBoothApp().run()
