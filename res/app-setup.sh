@@ -27,6 +27,7 @@ apt install --upgrade -y libgphoto2-dev pkg-config || die "Could not install lib
     . $VENV_DIR/bin/activate || die "Could not enter virtual environment"
 }
 
+echo "Installing pip packages..."
 python -m pip install -r $(dirname $0)/requirements.txt || die "Could not install pip packages"
 
 echo "Downloading fonts..."
@@ -36,3 +37,10 @@ import os.path
 kivysome.enable("https://kit.fontawesome.com/58bcf53674.js", font_folder=os.path.join(os.path.dirname(__file__), "venv", "lib", "fonts"))
 EOF
 [ $? == 0 ] || die "Could not download fonts"
+
+echo "Updating Kivy config..."
+python - << EOF
+from kivy.config import Config
+Config.set('kivy', 'keyboard_mode', 'systemanddock')
+Config.write()
+EOF
