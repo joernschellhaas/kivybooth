@@ -2,6 +2,7 @@
 #:import KivyLexer kivy.extras.highlight.KivyLexer
 #:import Factory kivy.factory.Factory
 #:import icon kivysome.icon
+#:import App kivy.app.App
 
 
 # Overriding and defining some Kivy classes to have uniform design
@@ -42,6 +43,8 @@
     height: self.minimum_height
 
 
+# Root layout
+
 BoxLayout:
     orientation: 'vertical'
 
@@ -64,7 +67,7 @@ BoxLayout:
                 size_hint_y: 1
 
             KBMenuButton:
-                text: ('%s Login' % icon('lock')) if (sm.current_screen and sm.current_screen.name == 'Welcome') else ('%s Abbrechen' % icon('times-circle'))
+                text: '%s Login' % icon("lock")
                 on_release: app.go_to_screen("login")
 
     ScreenManager:

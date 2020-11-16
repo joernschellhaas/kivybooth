@@ -9,20 +9,17 @@ See README.md for details.
 
 '''
 
+# Libraries
 from time import time
 from kivy.app import App
-import os.path
-from kivy.lang import Builder
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
     ListProperty
 from kivy.clock import Clock
 from kivy.animation import Animation
 from kivy.uix.screenmanager import Screen
-import glob
 import kivysome
-from screens import *
 from kivy.config import Config
-
+import os.path
 
 
 class KivyBoothApp(App):
@@ -36,16 +33,14 @@ class KivyBoothApp(App):
     hierarchy = ListProperty([])
 
     def build(self):
+        # Late loading of application modules - otherwise, they would not find the app instance
+        import screens
+        import layout
         self.title = 'KivyBooth'
-        self.load_screens()
+        self.screens = screens.load()
+        self.root = layout.root
         self.go_to_screen("idle")
         Clock.schedule_interval(self._update_clock, 1 / 60.)
-
-    def load_screens(self):
-        self.screens = {}
-        for fn in glob.glob(os.path.join(os.path.dirname(__file__), "res", "screens", "*.kv")):
-            root = Builder.load_file(fn)
-            self.screens[os.path.splitext(os.path.split(fn)[1])[0]] = root
 
     def on_pause(self):
         return True
