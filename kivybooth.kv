@@ -3,8 +3,13 @@
 #:import Factory kivy.factory.Factory
 #:import icon kivysome.icon
 
-<KBMenuButton@ActionButton>:
+
+# Overriding and defining some Kivy classes to have uniform design
+
+<Widget>:
     font_size: 24
+
+<KBMenuButton@ActionButton>:
     height: 48
     markup: True
 
@@ -13,20 +18,28 @@
         do_scroll_x: False
         do_scroll_y: False if root.fullscreen else (content.height > root.height - dp(16))
         AnchorLayout:
-            size_hint_y: None
-            height: root.height if root.fullscreen else max(root.height, content.height)
-            GridLayout:
-                id: content
-                cols: 1
-                spacing: '8dp'
-                padding: '8dp'
-                size_hint: (1, 1) if root.fullscreen else (.8, None)
-                height: self.height if root.fullscreen else self.minimum_height
+            id: content
+
+<AnchorLayout>:
+    anchor_x: 'center'
+    anchor_y: 'center'
+    padding: '8dp'
+
+<KBButton@Button>:
+    width: self.texture_size[0] + self.font_size
+    height: self.texture_size[1] + self.font_size
+    size_hint: [None, None]
+
+<TextInput>:
+    size_hint: [0.7, None]
+    padding: 12
+    height: self.minimum_height
 
 
 BoxLayout:
     orientation: 'vertical'
 
+    # Background
     canvas.before:
         Color:
             rgb: .6, .6, .6
@@ -38,29 +51,20 @@ BoxLayout:
 
         ActionView:
             id: av
-            height: 36
             ActionPrevious:
                 with_previous: (False if sm.current_screen.name == 'button' else True) if sm.current_screen else False
-                title: 'Photobooth' + ('' if not app.current_title else ' - {}'.format(app.current_title))
+                title: app.current_title
                 on_release: app.go_hierarchy_previous()
+                size_hint_y: 1
 
             KBMenuButton:
-                text: '%s Login' % icon('lock')
+                text: ('%s Login' % icon('lock')) if (sm.current_screen and sm.current_screen.name == 'Welcome') else ('%s Abbrechen' % icon('times-circle'))
                 on_release: app.go_to_screen("login")
 
     ScrollView:
         id: sv
         size_hint_y: None
         height: 0
-
-        CodeInput:
-            id: sourcecode
-            lexer: KivyLexer()
-            text: app.sourcecode
-            readonly: True
-            size_hint_y: None
-            font_size: '12sp'
-            height: self.minimum_height
 
     ScreenManager:
         id: sm

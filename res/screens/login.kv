@@ -1,8 +1,12 @@
-KBScreen:
+#:kivy 1.11.0
+
+LoginScreen:
     name: 'Login'
 
     TextInput:
-        size_hint_y: None
-        height: '32dp'
-        text: 'Password'
+        id: password
         password: True
+        #unfocus_on_touch: False
+        
+    #VKeyboard:
+    #    font_size: 30

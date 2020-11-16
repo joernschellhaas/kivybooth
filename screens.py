@@ -3,6 +3,9 @@ from kivy.clock import Clock
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
     ListProperty, ObjectProperty
 import kivy.app
+from kivy.core.window import Window
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.anchorlayout import AnchorLayout
 
 
 def app():
@@ -13,8 +16,16 @@ class KBScreen(Screen):
     fullscreen = BooleanProperty(False)
     def add_widget(self, *args):
         if 'content' in self.ids:
+            print("Delegating addition of widget to screen")
             return self.ids.content.add_widget(*args)
         return super().add_widget(*args)
+
+class AdaptiveBoxLayout(BoxLayout):
+    def add_widget(self, *args):
+        print("Wrapping addition of widget to AdaptiveBoxLayout")
+        wrapper = AnchorLayout()
+        super().add_widget(wrapper)
+        wrapper.add_widget(*args)
 
 
 class CountdownScreen(KBScreen):
@@ -30,3 +41,8 @@ class CountdownScreen(KBScreen):
             app().go_to_screen("idle")
     def on_pre_leave(self, *args):
         self.counter.cancel()
+
+class LoginScreen(KBScreen):
+    def on_enter(self, *args):
+        self.ids.password.focus = True
+        #app().root.ids.sm.height -= 100

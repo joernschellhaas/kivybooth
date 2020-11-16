@@ -1,9 +1,10 @@
+#:kivy 1.11.1
+
 KBScreen:
     name: 'Welcome'
 
-    Button:
-        size_hint_y: None
-        height: '96dp'
+    KBButton:
+        #height: '96dp'
         text: 'Take picture'
         font_size: 32
         on_release: app.go_to_screen("countdown")  
