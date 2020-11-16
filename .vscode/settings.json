@@ -1,4 +1,11 @@
 {
-    "python.pythonPath": "${workspaceFolder}/venv/bin/python",
-    "terminal.integrated.shellArgs.linux": ["--rcfile", ".bashrc"]
+    "terminal.integrated.shellArgs.linux": [
+        "--rcfile",
+        ".bashrc"
+    ],
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/__pycache__/**": true,
+        "**/venv/**": true
+    }
 }
