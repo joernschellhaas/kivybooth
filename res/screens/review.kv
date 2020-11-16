@@ -1,7 +1,7 @@
 ReviewScreen:
     name: 'Your Picture'
 
-    AdaptiveBoxLayout:
+    BoxLayout:
         orientation: 'vertical'
 
         Image:
@@ -11,8 +11,8 @@ ReviewScreen:
             orientation: 'horizontal'
             size_hint_y: None
 
-            Button:
-                text: "Print"
+            KBButton:
+                text: "%s Print" % icon("print")
                 
-            Button:
-                text: "Discard"
+            KBButton:
+                text: "%s Discard" % icon("trash")
