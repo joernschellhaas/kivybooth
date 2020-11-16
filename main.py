@@ -34,6 +34,7 @@ class KivyBoothApp(App):
     sourcecode = StringProperty()
     screen_names = ListProperty([])
     hierarchy = ListProperty([])
+    last_photo = None
 
     def build(self):
         # Late loading of application modules - otherwise, they would not find the app instance
@@ -41,6 +42,7 @@ class KivyBoothApp(App):
         import layout
         self.title = 'KivyBooth'
         self.screens = screens.load()
+        self.camera = camera.Camera()
         self.root = layout.root
         self.go_to_screen("idle")
         Clock.schedule_interval(self._update_clock, 1 / 60.)
