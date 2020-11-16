@@ -2,7 +2,7 @@
 kivybooth
 =========
 
-A photobooth application, intended to consist of a touch screen, a libgphoto
+A photobooth application, intended to consist of a touch screen, a libgphoto2
 compatible camera, and a printer connected via USB.
 
 See README.md for details.
@@ -20,6 +20,9 @@ from kivy.uix.screenmanager import Screen
 import kivysome
 from kivy.config import Config
 import os.path
+
+# Modules
+import camera
 
 
 class KivyBoothApp(App):
