@@ -23,5 +23,8 @@ echo
 [[ $REPLY =~ ^[Yy]$ ]] ||die "Could not verify that certificate login works."
 passwd -l pi
 
+# Disable login tty - we only want to login via SSH and it is annoying to see that on the screen
+systemctl mask getty@tty1.service
+
 # Finished :)
 echo "Setup finished, you may reboot now. Your device should show up in your network as '$DEVNAME'."
