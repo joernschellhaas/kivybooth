@@ -13,3 +13,10 @@ die() {
 
 cd $(dirname $0)
 python main.py 2>&1 | grep --line-buffered --invert-match '^INFO: The key you just pressed is not recognized by SDL\.'
+rc=${PIPESTATUS[0]}
+
+if [ $rc -ne 0 ]; then # Check if we stopped unintentionally
+    echo Kivybooth failed. Will restart system in 30 seconds...
+    sleep 30 # Wait a little so that we have a little time to connect to the device in case of boot loops
+    reboot
+fi
