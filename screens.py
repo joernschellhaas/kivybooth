@@ -6,6 +6,7 @@ import kivy.app
 from kivy.core.window import Window
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.widget import Widget
 
 
 def app():
@@ -14,11 +15,16 @@ def app():
 
 class KBScreen(Screen):
     fullscreen = BooleanProperty(False)
+    keyboard = BooleanProperty(False)
     def add_widget(self, *args):
         if 'content' in self.ids:
             print("Delegating addition of widget to screen")
             return self.ids.content.add_widget(*args)
         return super().add_widget(*args)
+    def on_pre_enter(self, *args, **kwargs):
+        super().on_pre_enter(*args, **kwargs)
+        if self.keyboard:
+            self.ids.kbd_placeholder.height = 300
 
 class AdaptiveBoxLayout(BoxLayout):
     def add_widget(self, *args):
@@ -45,4 +51,3 @@ class CountdownScreen(KBScreen):
 class LoginScreen(KBScreen):
     def on_enter(self, *args):
         self.ids.password.focus = True
-        #app().root.ids.sm.height -= 100

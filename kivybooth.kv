@@ -14,11 +14,17 @@
     markup: True
 
 <KBScreen>:
-    ScrollView:
-        do_scroll_x: False
-        do_scroll_y: False if root.fullscreen else (content.height > root.height - dp(16))
-        AnchorLayout:
-            id: content
+    BoxLayout:
+        orientation: 'vertical'
+        ScrollView:
+            do_scroll_x: False
+            do_scroll_y: False if root.fullscreen else (content.height > root.height - dp(16))
+            AnchorLayout:
+                id: content
+        Widget:
+            id: kbd_placeholder
+            height: 0
+            size_hint_y: None
 
 <AnchorLayout>:
     anchor_x: 'center'
@@ -60,11 +66,6 @@ BoxLayout:
             KBMenuButton:
                 text: ('%s Login' % icon('lock')) if (sm.current_screen and sm.current_screen.name == 'Welcome') else ('%s Abbrechen' % icon('times-circle'))
                 on_release: app.go_to_screen("login")
-
-    ScrollView:
-        id: sv
-        size_hint_y: None
-        height: 0
 
     ScreenManager:
         id: sm
