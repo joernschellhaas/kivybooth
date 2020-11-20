@@ -1,3 +1,4 @@
+# Libraries
 from layout import *
 from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
     ListProperty, ObjectProperty
@@ -7,6 +8,7 @@ from kivy.lang import Builder
 import glob
 import os.path
 
+# Application modules
 import image
 import light
 

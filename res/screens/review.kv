@@ -1,3 +1,6 @@
+#:kivy 1.11.0
+#:import _ i18n._
+
 ReviewScreen:
     name: 'Your Picture'
 
@@ -12,7 +15,7 @@ ReviewScreen:
             size_hint_y: None
 
             KBButton:
-                text: "%s Print" % icon("print")
+                text: _("%s Print") % icon("print")
                 
             KBButton:
                 text: "%s Discard" % icon("trash")

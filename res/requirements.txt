@@ -5,4 +5,5 @@ gphoto2>=2.2.1
 Kivy>=1.11.1
 Pillow>=7.0.0
 wiringpi>=2.60.0
+flufl.i18n>=3.0.0
 git+https://github.com/joernschellhaas/kivysome/@master
