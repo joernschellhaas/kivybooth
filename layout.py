@@ -4,8 +4,10 @@ from kivy.properties import NumericProperty, StringProperty, BooleanProperty,\
     ListProperty, ObjectProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.anchorlayout import AnchorLayout
+from kivy.uix.button import Button
 from kivy.lang import Builder
 import kivy.app
+from kivysome import icon
 
 
 class KBScreen(Screen):
@@ -27,6 +29,15 @@ class AdaptiveBoxLayout(BoxLayout):
         wrapper = AnchorLayout()
         super().add_widget(wrapper)
         wrapper.add_widget(*args)
+
+class KBButton(Button):
+    pass
+
+class KBIconButton(KBButton):
+    icon = StringProperty("")
+    text = StringProperty("")
+    def on_kv_post(self, base_widget):
+        self.text = "{} {}".format(icon(self.icon), self.text)
 
 
 root = Builder.load_file('layout.kv')

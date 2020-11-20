@@ -14,8 +14,10 @@ ReviewScreen:
             orientation: 'horizontal'
             size_hint_y: None
 
-            KBButton:
-                text: _("%s Print") % icon("print")
+            KBIconButton:
+                text: _("Print")
+                icon: "print"
                 
-            KBButton:
-                text: "%s Discard" % icon("trash")
+            KBIconButton:
+                text: _("Discard")
+                icon: "trash"
