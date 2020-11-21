@@ -53,9 +53,9 @@ class KivyBoothApp(App):
     def on_resume(self):
         pass
 
-    def go_to_screen(self, name):
+    def go_to_screen(self, name, direction='left'):
         sm = self.root.ids.sm
-        sm.switch_to(self.screens[name], direction='left')
+        sm.switch_to(self.screens[name], direction=direction)
         self.current_title = self.screens[name].name
 
     def go_hierarchy_previous(self):

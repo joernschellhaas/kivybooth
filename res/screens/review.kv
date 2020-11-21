@@ -42,6 +42,9 @@ ReviewScreen:
                     KBIconButton:
                         text: _("Discard")
                         icon: "trash"
+                        on_release: app.go_to_screen("idle", "right")  
                     KBIconButton:
                         text: _("Print")
                         icon: "print"
+                        default: True
+                        on_release: app.go_to_screen("printing")  

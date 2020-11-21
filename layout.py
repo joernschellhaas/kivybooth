@@ -32,7 +32,7 @@ class AdaptiveBoxLayout(BoxLayout):
         wrapper.size_hint = widget.size_hint
 
 class KBButton(Button):
-    pass
+    default = BooleanProperty(False)
 
 class KBIconButton(KBButton):
     icon = StringProperty("")
