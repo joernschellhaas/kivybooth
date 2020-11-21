@@ -46,7 +46,7 @@ class ReviewScreen(KBScreen):
     def on_pre_enter(self, *args):
         # We need to create a thumbnail because the original image is too big
         # for Kivy to handle it
-        self.ids.photo.source = image.thumbnail(app.last_photo)
+        self.ids.photo.source = image.Thumbnail(app.last_photo).path
         self.ids.photo.reload()
 
 class LoginScreen(KBScreen):
