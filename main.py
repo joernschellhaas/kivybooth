@@ -34,7 +34,7 @@ class KivyBoothApp(App):
     sourcecode = StringProperty()
     screen_names = ListProperty([])
     hierarchy = ListProperty([])
-    last_photo = None
+    last_photo = "res/background.png"
 
     def build(self):
         # Late loading of application modules - otherwise, they would not find the app instance

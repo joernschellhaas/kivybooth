@@ -6,18 +6,42 @@ ReviewScreen:
 
     BoxLayout:
         orientation: 'vertical'
+#        canvas:
+#            Color:
+#                rgba: 1, 1, 1, 0.5
+#            Rectangle:
+#                pos: self.x, self.y
+#                size: self.width, self.height
 
         Image:
             id: photo
 
-        AdaptiveBoxLayout:
-            orientation: 'horizontal'
-            size_hint_y: None
+        ButtonBar:
 
-            KBIconButton:
-                text: _("Print")
-                icon: "print"
+            AnchorLayout:
+                anchor_x: 'left'
+                size_hint_y: None
+                BoxLayout:
+                    orientation: 'horizontal'
+                    size_hint_y: None
+                    Switch:
+                        id: store_allowed
+                        active: True
+                        size_hint_x: None
+                        size_hint_y: None
+                    Label:
+                        text_size: self.size
+                        valign: 'middle'
+                        text: _("Store a copy of the picture")
+                        size_hint_y: None
                 
-            KBIconButton:
-                text: _("Discard")
-                icon: "trash"
+            AnchorLayout:
+                anchor_x: 'right'
+                size_hint_y: None
+                ResizingCol_GridLayout:
+                    KBIconButton:
+                        text: _("Discard")
+                        icon: "trash"
+                    KBIconButton:
+                        text: _("Print")
+                        icon: "print"

@@ -3,12 +3,13 @@
 #:import Factory kivy.factory.Factory
 #:import icon kivysome.icon
 #:import App kivy.app.App
+#:import settings settings
 
 
 # Overriding and defining some Kivy classes to have uniform design
 
 <Widget>:
-    font_size: 24
+    font_size: settings.font_size
 
 <KBMenuButton@ActionButton>:
     height: 48
@@ -21,16 +22,28 @@
             do_scroll_x: False
             do_scroll_y: False if root.fullscreen else (content.height > root.height - dp(16))
             AnchorLayout:
+                padding: settings.font_size / 2
                 id: content
         Widget:
             id: kbd_placeholder
             height: 0
             size_hint_y: None
 
+<BoxLayout>:
+    spacing: '8dp'
+
 <AnchorLayout>:
     anchor_x: 'center'
     anchor_y: 'center'
-    padding: '8dp'
+    #padding: '8dp'
+
+<ResizingCol_GridLayout@GridLayout>:
+    size_hint: [None, None]
+    cols: len(self.children)
+    #cols_minimum: {1: 50, 2: 50}
+    width: self.minimum_width #sum([c.width for c in self.children]) + self.spacing[0] * (len(self.children) - 1)
+    height: self.minimum_height
+    spacing: '8dp'
 
 <KBButton@Button>:
     width: self.texture_size[0] + self.font_size
@@ -38,9 +51,14 @@
     size_hint: [None, None]
     markup: True
 
+<ButtonBar@GridLayout>:
+    size_hint_y: None
+    height: 2 * settings.font_size + 20 # No idea why that works, sorry...
+    cols: len(self.children)
+
 <TextInput>:
     size_hint: [0.7, None]
-    padding: 12
+    padding: settings.font_size / 2
     height: self.minimum_height
 
 

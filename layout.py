@@ -24,11 +24,12 @@ class KBScreen(Screen):
             self.ids.kbd_placeholder.height = 300
 
 class AdaptiveBoxLayout(BoxLayout):
-    def add_widget(self, *args):
+    def add_widget(self, widget, index=0, canvas=None):
         print("Wrapping addition of widget to AdaptiveBoxLayout")
         wrapper = AnchorLayout()
         super().add_widget(wrapper)
-        wrapper.add_widget(*args)
+        wrapper.add_widget(widget, index, canvas)
+        wrapper.size_hint = widget.size_hint
 
 class KBButton(Button):
     pass
@@ -38,6 +39,7 @@ class KBIconButton(KBButton):
     text = StringProperty("")
     def on_kv_post(self, base_widget):
         self.text = "{} {}".format(icon(self.icon), self.text)
+        super().on_kv_post(base_widget)
 
 
 root = Builder.load_file('layout.kv')
