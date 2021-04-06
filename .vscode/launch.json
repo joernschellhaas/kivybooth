@@ -3,9 +3,8 @@
         {
             "name": "kivybooth",
             "type": "python",
-            "program": "${workspaceFolder}/main.py",
+            "program": "${workspaceFolder}/${relativeFile}",
             "request": "launch",
-            "preLaunchTask": "stop"
         }
     ]
 }
