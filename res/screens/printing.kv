@@ -1,7 +1,7 @@
 #:kivy 1.11.0
 #:import _ i18n._
 
-KBScreen:
+PrintingScreen:
     name: 'Printing'
 
     BoxLayout:
@@ -11,7 +11,12 @@ KBScreen:
             text: _("Printing...")
             font_size: 60
 
-        Label:
-            text: icon("print")
-            font_size: 160
-            size_hint_y: 0.5
+#       Label:
+#           text: icon("print")
+#           font_size: 160
+#           size_hint_y: 0.5
+#
+        ProgressBar:
+            id: progress_bar
+            max: 100
+    

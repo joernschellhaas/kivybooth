@@ -4,7 +4,8 @@
         {
             "label": "stop",
             "type": "shell",
-            "command": "systemctl stop kivybooth"
+            "command": "systemctl stop kivybooth",
+            "problemMatcher": []
         },
         {
             "label": "start",
