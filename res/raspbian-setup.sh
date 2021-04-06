@@ -26,5 +26,8 @@ passwd -l pi
 # Disable login tty - we only want to login via SSH and it is annoying to see that on the screen
 systemctl mask getty@tty1.service
 
+# Install CUPS and libcups2 (incl. headers)
+apt install cups libcups2-dev # also install `cups` ?
+
 # Finished :)
 echo "Setup finished, you may reboot now. Your device should show up in your network as '$DEVNAME'."

@@ -6,4 +6,5 @@ Kivy>=1.11.1
 Pillow>=7.0.0
 wiringpi>=2.60.0
 flufl.i18n>=3.0.0
+pycups>=2.0.1
 git+https://github.com/joernschellhaas/kivysome/@master
