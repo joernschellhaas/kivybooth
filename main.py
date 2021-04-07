@@ -23,6 +23,7 @@ import os.path
 
 # Modules
 import camera
+from res.fontawesome import *
 
 
 class KivyBoothApp(App):
@@ -73,8 +74,4 @@ class KivyBoothApp(App):
 
 
 if __name__ == '__main__':
-    kivysome.enable("https://kit.fontawesome.com/58bcf53674.js",
-    font_folder=os.path.join(os.path.dirname(__file__), "venv", "lib", "fonts"),
-    cached=True,
-    group=kivysome.FontGroup.SOLID)
     KivyBoothApp().run()
