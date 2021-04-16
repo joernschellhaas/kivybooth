@@ -9,6 +9,9 @@ See README.md for details.
 
 '''
 
+
+import log, logging
+
 # Libraries
 from time import time
 from kivy.app import App
@@ -24,6 +27,9 @@ import os.path
 # Modules
 import camera
 from res.fontawesome import *
+
+
+logger = logging.getLogger("kb.main")
 
 
 class KivyBoothApp(App):
@@ -47,6 +53,7 @@ class KivyBoothApp(App):
         self.root = layout.root
         self.go_to_screen("idle")
         Clock.schedule_interval(self._update_clock, 1 / 60.)
+        logger.info("Application started")
 
     def on_pause(self):
         return True
@@ -55,6 +62,7 @@ class KivyBoothApp(App):
         pass
 
     def go_to_screen(self, name, direction='left'):
+        logger.info("Going to screen '%s'", name)
         sm = self.root.ids.sm
         sm.switch_to(self.screens[name], direction=direction)
         self.current_title = self.screens[name].name
