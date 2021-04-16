@@ -5,10 +5,12 @@ import time
 from enum import Enum
 if not emulation.active():
     import cups
+import logging
 
 
 if not emulation.active():
     conn = cups.Connection()
+logger = logging.getLogger("kb.printer")
 
 
 class JobStatus(Enum):
@@ -16,45 +18,57 @@ class JobStatus(Enum):
     DONE = 2
     FAILED = 3
 
+
+class Job:
+    """
+    Create and start a print job
+    """
+    def __init__(self, filename):
+        if emulation.active():
+            return 0
+        else:
+            self.filename = os.path.abspath(filename)
+            printer = first_printer()
+            logger.info("Printing %s on %s", self.filename, printer)
+            self.id = conn.printFile(printer, self.filename, 'kivybooth', {})# {'media': "Custom.{}x{}cm".format(width, height)}) 
+            self.prev_atts = {}
+
+    def status(self):
+        if emulation.active():
+            return (JobStatus.DONE, 100)
+        else:
+            atts = conn.getJobAttributes(self.id, ["job-state", "job-media-progress"])
+            if self.prev_atts != atts:
+                logger.debug("Job %d changed to %s", self.id, atts)
+                self.prev_atts = atts
+            state = atts["job-state"]
+            if state == 5:
+                return (JobStatus.PRINTING, atts["job-media-progress"])
+            elif state == 9:
+                return (JobStatus.DONE, 100)
+            elif state == 3:
+                return (JobStatus.PRINTING, 0)
+            else:
+                return (JobStatus.FAILED, 100)
+
+
 def first_printer():
     id, _ = next(iter(conn.getPrinters().items()))
-    print("Using printer {}".format(id))
     return id
 
-def job_status(job_id):
-    if emulation.active():
-        return (JobStatus.DONE, 100)
-    else:
-        atts = conn.getJobAttributes(job_id, ["job-state", "job-media-progress"])
-        if atts["job-state"] == 5:
-            return (JobStatus.PRINTING, atts["job-media-progress"])
-        elif atts["job-state"] == 9:
-            return (JobStatus.DONE, 100)
-        elif atts["job-state"] == 3:
-            return (JobStatus.PRINTING, 0)
-        return atts
-    #jobs = conn.getJobs(which_jobs='all', my_jobs=False, limit=-1, first_job_id=job_id, requested_attributes=[])
-    #return jobs
-
-def start_job(filename, width=15, height=10):
-    if emulation.active():
-        return 0
-    else:
-        filename = os.path.abspath(filename)
-        print("Printing {} in size {}x{}cm".format(filename, width, height))
-        return conn.printFile(first_printer(), filename, 'kivybooth', {})# {'media': "Custom.{}x{}cm".format(width, height)}) 
 
 def print_image(filename, timeout=60):
     status = None
-    job_id = start_job(filename)
-    print("Started job with ID {}".format(job_id))
+    job = Job(filename)
+    logger.info("Started job with ID {}".format(job.id))
     while(timeout > 0):
-        status, progress = job_status(job_id)
-        print("Status for job {} is {} ({}%)".format(job_id, status, progress))
+        status, progress = job.status()
         if status == JobStatus.DONE:
-            break
+            return
         time.sleep(1)
         timeout -= 1
+    logger.error("Job %d did not finish in expected time", job.id)
 
 if __name__ == '__main__':
+    logging.basicConfig(level=logging.DEBUG)
     print_image("res/kivybooth-test.jpg")

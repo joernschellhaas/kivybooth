@@ -53,13 +53,13 @@ class ReviewScreen(KBScreen):
 
 class PrintingScreen(KBScreen):
     def on_pre_enter(self, *args):
-        self.job = printer.start_job(app.last_photo)
+        self.job = printer.Job(app.last_photo)
         self.updater = Clock.schedule_interval(self.update, 0.5)
     def on_pre_leave(self, *args):
         self.updater.cancel()
     def update(self, dt):
-        status, progress = printer.job_status(self.job)
-        if status == printer.JobStatus.DONE:
+        status, progress = self.job.status()
+        if status in [printer.JobStatus.DONE, printer.JobStatus.FAILED]:
             app.go_to_screen("idle")
         else:
             self.ids.progress_bar.value = progress
