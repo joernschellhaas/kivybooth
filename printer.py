@@ -1,10 +1,14 @@
-import cups
+import emulation
+
 import os.path
 import time
 from enum import Enum
+if not emulation.active():
+    import cups
 
 
-conn = cups.Connection()
+if not emulation.active():
+    conn = cups.Connection()
 
 
 class JobStatus(Enum):
@@ -18,21 +22,27 @@ def first_printer():
     return id
 
 def job_status(job_id):
-    atts = conn.getJobAttributes(job_id, ["job-state", "job-media-progress"])
-    if atts["job-state"] == 5:
-        return (JobStatus.PRINTING, atts["job-media-progress"])
-    elif atts["job-state"] == 9:
+    if emulation.active():
         return (JobStatus.DONE, 100)
-    elif atts["job-state"] == 3:
-        return (JobStatus.PRINTING, 0)
-    return atts
+    else:
+        atts = conn.getJobAttributes(job_id, ["job-state", "job-media-progress"])
+        if atts["job-state"] == 5:
+            return (JobStatus.PRINTING, atts["job-media-progress"])
+        elif atts["job-state"] == 9:
+            return (JobStatus.DONE, 100)
+        elif atts["job-state"] == 3:
+            return (JobStatus.PRINTING, 0)
+        return atts
     #jobs = conn.getJobs(which_jobs='all', my_jobs=False, limit=-1, first_job_id=job_id, requested_attributes=[])
     #return jobs
 
 def start_job(filename, width=15, height=10):
-    filename = os.path.abspath(filename)
-    print("Printing {} in size {}x{}cm".format(filename, width, height))
-    return conn.printFile(first_printer(), filename, 'kivybooth', {})# {'media': "Custom.{}x{}cm".format(width, height)}) 
+    if emulation.active():
+        return 0
+    else:
+        filename = os.path.abspath(filename)
+        print("Printing {} in size {}x{}cm".format(filename, width, height))
+        return conn.printFile(first_printer(), filename, 'kivybooth', {})# {'media': "Custom.{}x{}cm".format(width, height)}) 
 
 def print_image(filename, timeout=60):
     status = None

@@ -28,7 +28,7 @@ apt install --upgrade -y libgphoto2-dev pkg-config || die "Could not install lib
 }
 
 echo "Installing pip packages..."
-python -m pip install -r $(dirname $0)/requirements.txt || die "Could not install pip packages"
+python -m pip install -r $(dirname $0)/requirements.txt -r $(dirname $0)/requirements-target.txt || die "Could not install pip packages"
 
 echo "Downloading fonts..."
 python - << EOF

@@ -1,15 +1,17 @@
 from PIL import Image
+import tempfile
+import os
 
 
-
-
-
+# The thumbnail file will be deleted when the object is deleted. Therefore, always store a reference to the object as long as the file is required.
 class Thumbnail:
-    thumb_id = 0
 
     def __init__(self, orig):
         im = Image.open(orig)
         im.thumbnail((600, 400))
-        self.path = "/tmp/thumbnail{:06d}.jpg".format(Thumbnail.thumb_id)
-        Thumbnail.thumb_id += 1
-        im.save(self.path, "JPEG")
+        fileno, self.path = tempfile.mkstemp(suffix=".jpg")
+        with open(fileno) as file:
+            im.save(file, "JPEG")
+
+    def __del__(self):
+        os.remove(self.path)
