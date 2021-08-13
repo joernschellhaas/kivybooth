@@ -24,9 +24,7 @@ class Job:
     Create and start a print job
     """
     def __init__(self, filename):
-        if emulation.active():
-            return 0
-        else:
+        if not emulation.active():
             self.filename = os.path.abspath(filename)
             printer = first_printer()
             logger.info("Printing %s on %s", self.filename, printer)
