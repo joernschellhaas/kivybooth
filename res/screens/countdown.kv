@@ -1,4 +1,5 @@
 #:kivy 2.0.0
+#:import Direction base.Direction
 
 CountdownScreen:
     name: 'Countdown'
@@ -17,4 +18,4 @@ CountdownScreen:
 
         KBButton:
             text: 'Abort'
-            on_release: app.go_to_screen("idle")  
+            on_release: app.go_to_screen("idle", Direction.BACK)  

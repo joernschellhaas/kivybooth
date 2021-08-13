@@ -27,6 +27,7 @@ import os.path
 # Modules
 import camera
 from res.fontawesome import *
+from base import *
 
 
 logger = logging.getLogger("kb.main")
@@ -39,8 +40,9 @@ class KivyBoothApp(App):
     time = NumericProperty(0)
     show_sourcecode = BooleanProperty(False)
     sourcecode = StringProperty()
-    screen_names = ListProperty([])
-    hierarchy = ListProperty([])
+    logged_in = False
+    screen_names = []
+    hierarchy = []
     last_photo = "res/background.png"
 
     def build(self):
@@ -61,21 +63,29 @@ class KivyBoothApp(App):
     def on_resume(self):
         pass
 
-    def go_to_screen(self, name, direction='left'):
-        logger.info("Going to screen '%s'", name)
+    def go_to_screen(self, name: str, direction = Direction.FORWARD):
+        logger.info("Going to screen '%s' in %s (%s)", name, direction, direction.to_graphical())
+        print(type(direction), type(Direction.FORWARD))
+        if direction is Direction.FORWARD:
+            self.hierarchy.append(name)
+        elif direction == Direction.REPLACE:
+            self.hierarchy[-1] = name
+        elif direction is Direction.BACK:
+            if len(self.hierarchy) > 1:
+                self.hierarchy.pop()
+            while self.hierarchy[-1] != name and len(self.hierarchy) > 1:
+                self.hierarchy.pop()
+            name = self.hierarchy[-1]
+        else:
+            raise Exception("d'ooh")
+        print("Hierarchy", self.hierarchy)
         sm = self.root.ids.sm
-        sm.switch_to(self.screens[name], direction=direction)
+        sm.switch_to(self.screens[name], direction=direction.to_graphical())
         self.current_title = self.screens[name].name
 
     def go_hierarchy_previous(self):
-        ahr = self.hierarchy
-        if len(ahr) == 1:
-            return
-        if ahr:
-            ahr.pop()
-        if ahr:
-            idx = ahr.pop()
-            self.go_screen(idx)
+        if len(self.hierarchy) > 1:
+            self.go_to_screen(self.hierarchy[-2], Direction.BACK)
 
     def _update_clock(self, dt):
         self.time = time()

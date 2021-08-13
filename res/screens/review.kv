@@ -1,5 +1,6 @@
 #:kivy 2.0.0
 #:import _ i18n._
+#:import Direction base.Direction
 
 ReviewScreen:
     name: 'Your Picture'
@@ -42,7 +43,7 @@ ReviewScreen:
                     KBIconButton:
                         text: _("Discard")
                         icon: "trash"
-                        on_release: app.go_to_screen("idle", "right")  
+                        on_release: app.go_to_screen("idle", Direction.BACK)  
                     KBIconButton:
                         text: _("Print")
                         icon: "print"

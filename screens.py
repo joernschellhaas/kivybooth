@@ -12,6 +12,7 @@ import os.path
 import image
 import light
 import printer
+from base import Direction
 
 
 def load():
@@ -38,7 +39,7 @@ class CountdownScreen(KBScreen):
             Clock.schedule_once(self.capture)
     def capture(self, dt):
         app.last_photo = app.camera.capture()
-        app.go_to_screen("review")
+        app.go_to_screen("review", Direction.REPLACE)
     def on_pre_leave(self, *args):
         self.counter.cancel()
         light.set_brightness(0)
@@ -60,7 +61,7 @@ class PrintingScreen(KBScreen):
     def update(self, dt):
         status, progress = self.job.status()
         if status in [printer.JobStatus.DONE, printer.JobStatus.FAILED]:
-            app.go_to_screen("idle")
+            app.go_to_screen("idle", Direction.REPLACE)
         else:
             self.ids.progress_bar.value = progress
 
