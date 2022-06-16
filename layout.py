@@ -41,6 +41,9 @@ class KBIconButton(KBButton):
         self.text = "{} {}".format(icon(self.icon), self.text)
         super().on_kv_post(base_widget)
 
+class ConfigBool(BoxLayout):
+    pass
+
 
 root = Builder.load_file('layout.kv')
 app = kivy.app.App.get_running_app()

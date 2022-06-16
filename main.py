@@ -76,8 +76,6 @@ class KivyBoothApp(App):
             while self.hierarchy[-1] != name and len(self.hierarchy) > 1:
                 self.hierarchy.pop()
             name = self.hierarchy[-1]
-        else:
-            raise Exception("d'ooh")
         print("Hierarchy", self.hierarchy)
         sm = self.root.ids.sm
         sm.switch_to(self.screens[name], direction=direction.to_graphical())

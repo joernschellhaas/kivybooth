@@ -1,5 +1,4 @@
 #:kivy 2.0.0
-#:import KivyLexer kivy.extras.highlight.KivyLexer
 #:import Factory kivy.factory.Factory
 #:import icon kivysome.icon
 #:import App kivy.app.App
@@ -63,6 +62,17 @@
     size_hint: [0.7, None]
     padding: settings.font_size / 2
     height: self.minimum_height
+
+<ConfigBool>:
+    BoxLayout:
+        orientation: 'horizontal'
+        Label:
+            id: label
+            text_size: self.size
+            text: 'Example config option'
+        Switch:
+            id: value
+            active: True
 
 
 # Root layout

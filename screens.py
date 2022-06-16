@@ -68,3 +68,9 @@ class PrintingScreen(KBScreen):
 class LoginScreen(KBScreen):
     def on_enter(self, *args):
         self.ids.password.focus = True
+
+class AdminScreen(KBScreen):
+    def on_pre_enter(self, *args):
+        config = {"foo": True, "bar": False}
+        for key, value in enumerate(config):
+            self.ids.config.add_widget(ConfigBool())

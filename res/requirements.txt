@@ -3,3 +3,4 @@ Kivy>=2.0.0
 Pillow>=7.0.0
 flufl.i18n>=3.0.0
 kivysome>=0.2.1
+PyYAML>=5.4.1

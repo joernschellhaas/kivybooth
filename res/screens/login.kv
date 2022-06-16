@@ -4,8 +4,14 @@ LoginScreen:
     name: 'Login'
     keyboard: True
 
-    TextInput:
-        id: password
-        password: True
-        #unfocus_on_touch: False
-        
+    AdaptiveBoxLayout:
+        orientation: 'vertical'
+            
+        TextInput:
+            id: password
+            password: True
+            #unfocus_on_touch: False
+            
+        KBButton:
+            text: 'Login'
+            on_release: app.go_to_screen("admin", Direction.REPLACE)  
