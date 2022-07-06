@@ -1,18 +1,20 @@
 import emulation
 import time
+import atexit
 if not emulation.active():  
     import wiringpi
+
+
+def set_brightness(value):
+    if not emulation.active(): 
+        wiringpi.pwmWrite(LIGHT_PIN, int(1024 * value))
 
 
 if not emulation.active():  
     LIGHT_PIN = 1
     wiringpi.wiringPiSetup()
     wiringpi.pinMode(LIGHT_PIN, wiringpi.PWM_OUTPUT)
-
-
-def set_brightness(value):
-    if not emulation.active(): 
-        wiringpi.pwmWrite(LIGHT_PIN, int(1024 * value))
+    atexit.register(set_brightness, 0)
 
 
 if __name__ == '__main__':

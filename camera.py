@@ -35,8 +35,12 @@ class Camera:
             return target
 
     def close(self):
-        if not emulation.active():
+        if self.camera:
             self.camera.exit()
+            self.camera = None
+
+    def __del__(self):
+        self.close()
 
 
 if __name__ == "__main__":
