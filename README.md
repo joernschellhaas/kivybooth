@@ -17,7 +17,7 @@ For development puposes, the application is intended to also be run on Windows c
 
 
 ## Printer Configuration
-`raspbian-setup.sh` should have installed the `cups` package on your RPi. This allows you to use the CUPS web interface to configure and, more important, troubleshoot your driver. By default, the web UI will be accessible from localhost (that is, the RPi itself) only. You probably want to access it from your development PC. The easiest and most secure way to achieve that is to set up a SSH port forwarding with a command like `ssh root@photobooth -L 6310:localhost:631`. Then, you can access the web UI via http://localhost:631/ (tested on my Windows 10 PC).
+`raspbian-setup.sh` should have installed the `cups` package on your RPi. This allows you to use the CUPS web interface to configure and, more important, troubleshoot your driver. By default, the web UI will be accessible from localhost (that is, the RPi itself) only. You probably want to access it from your development PC. The easiest and most secure way to achieve that is to set up a SSH port forwarding with a command like `ssh root@photobooth -L 6310:localhost:631`. Then, you can access the web UI via http://localhost:6310/ (tested on my Windows 10 PC).
 
 What is needed to configure a printer correctly is hard to tell. To get a HP DeskJet 3760 to work, I additionally installed the `hplip` package and then cofigured the printer using `hp-setup -i`. I nevertheless had to restart the RPi before the printer would work correctly. You should probably try that before randomly installing things. I was however more successful with installing an Epson ET-2710, wich did not require any additional drivers.
 
