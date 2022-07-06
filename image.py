@@ -26,8 +26,11 @@ class SaveJob:
                 break
             else:
                 dest_path = os.path.join(dest, target_file)
-                logging.info(f"Storing {self.source_fh.name} to {dest_path}")
-                shutil.copyfile(src=self.source_fh.name, dst=dest_path)
+                try:
+                    shutil.copyfile(src=self.source_fh.name, dst=dest_path)
+                    logging.info(f"Stored {self.source_fh.name} to {dest_path}")
+                except OSError as exc:
+                    logging.warning(f"Could not store {self.source_fh.name} to {dest_path}", exc_info=exc)
                 self.progress = 100 * idx / (len(self.destinations) + 1)
         os.sync()
         self.status_val = True
