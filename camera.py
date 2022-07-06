@@ -1,4 +1,5 @@
 import emulation
+import image
 
 if not emulation.active():
     import gphoto2 as gp
@@ -27,12 +28,12 @@ class Camera:
         else:
             file_path = self.camera.capture(gp.GP_CAPTURE_IMAGE)
             print('Camera file path: {0}/{1}'.format(file_path.folder, file_path.name))
-            target = os.path.join('/tmp', file_path.name)
-            print('Copying image to', target)
+            img = image.Image()
+            print('Copying image to', img.path)
             camera_file = self.camera.file_get(
                 file_path.folder, file_path.name, gp.GP_FILE_TYPE_NORMAL)
-            camera_file.save(target)
-            return target
+            camera_file.save(img.path)
+            return img
 
     def close(self):
         if self.camera:

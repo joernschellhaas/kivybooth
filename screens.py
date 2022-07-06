@@ -39,6 +39,7 @@ class CountdownScreen(KBScreen):
             Clock.schedule_once(self.capture)
     def capture(self, dt):
         app.last_photo = app.camera.capture()
+        light.set_brightness(0)
         app.go_to_screen("review", Direction.REPLACE)
     def on_pre_leave(self, *args):
         self.counter.cancel()
@@ -48,23 +49,49 @@ class ReviewScreen(KBScreen):
     def on_pre_enter(self, *args):
         # We need to create a thumbnail because the original image is too big
         # for Kivy to handle it
-        self.thumbnail = image.Thumbnail(app.last_photo)
+        self.thumbnail = image.Thumbnail(app.last_photo.path)
         self.ids.photo.source = self.thumbnail.path
         self.ids.photo.reload()
+    def on_pre_leave(self, *args):
+        app.last_photo.do_store = self.ids.store_allowed.active
 
 class PrintingScreen(KBScreen):
-    def on_pre_enter(self, *args):
-        self.job = printer.Job(app.last_photo)
+    def on_enter(self, *args):
+        self.jobs = [printer.Job(app.last_photo.path)]
+        if app.last_photo.do_store: # Can not be accessed in on_pre_enter
+            self.jobs.append(app.last_photo.start_store())
         self.updater = Clock.schedule_interval(self.update, 0.5)
+        self.timeout = 60
+        self.runtime = 0
     def on_pre_leave(self, *args):
         self.updater.cancel()
+        for job in self.jobs:
+            job.cancel()
     def update(self, dt):
-        status, progress = self.job.status()
-        if status in [printer.JobStatus.DONE, printer.JobStatus.FAILED]:
-            app.go_to_screen("idle", Direction.REPLACE)
-        else:
-            self.ids.progress_bar.value = progress
-
+        self.runtime += dt
+        if self.runtime >= self.timeout:
+            self.cancel()
+            return
+        overall_progress = 100
+        for job in self.jobs:
+            status, progress = job.status()
+            progress = max(progress, overall_progress) # Use progress of slowest job
+            if status in [printer.JobStatus.DONE, printer.JobStatus.FAILED, True]:
+                self.jobs.remove(job)
+        overall_progress = min(overall_progress, 100 * self.runtime / self.timeout) # Consider timeout for progress
+        self.ids.progress_bar.value = overall_progress
+        if not self.jobs:
+            self.updater.cancel()
+            self.leave()
+    def cancel(self):
+        for job in self.jobs:
+            job.cancel()
+        self.jobs = []
+        self.leave()
+    def leave(self):
+        self.updater.cancel()
+        Clock.schedule_once(lambda dt: app.go_to_screen("idle", Direction.REPLACE), 1)
+        
 class LoginScreen(KBScreen):
     def on_enter(self, *args):
         self.ids.password.focus = True

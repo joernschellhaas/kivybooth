@@ -17,6 +17,7 @@ class JobStatus(Enum):
     PRINTING = 1
     DONE = 2
     FAILED = 3
+    CANCELED = 4
 
 
 class Job:
@@ -31,6 +32,9 @@ class Job:
             self.id = conn.printFile(printer, self.filename, 'kivybooth', {})# {'media': "Custom.{}x{}cm".format(width, height)}) 
             self.prev_atts = {}
 
+    def __del__(self):
+        self.cancel()
+
     def status(self):
         if emulation.active():
             return (JobStatus.DONE, 100)
@@ -44,10 +48,16 @@ class Job:
                 return (JobStatus.PRINTING, atts["job-media-progress"])
             elif state == 9:
                 return (JobStatus.DONE, 100)
+            elif state == 7:
+                return (JobStatus.CANCELED, 0)
             elif state == 3:
                 return (JobStatus.PRINTING, 0)
             else:
                 return (JobStatus.FAILED, 100)
+
+    def cancel(self):
+        if not emulation.active() and self.status()[0] == JobStatus.PRINTING:
+            conn.cancelJob(self.id)
 
 
 def first_printer():
