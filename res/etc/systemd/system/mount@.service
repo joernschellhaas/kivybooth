@@ -1,0 +1,13 @@
+[Unit]
+Description=Mount drive %i
+After=kivybooth.service
+BindsTo=dev-%i.device
+Requisite=dev-%i.device
+After=dev-%i.device
+
+[Service]
+Type=oneshot
+RemainAfterExit=true
+ExecStart=/bin/sh -c 'test -b /dev/%i && mkdir -p /media/%i && /bin/mount /dev/%i /media/%i || rmdir /media/%i || /bin/true'
+ExecStop=/bin/sh -c '/bin/umount /dev/%i; rmdir /media/%i || /bin/true'
+

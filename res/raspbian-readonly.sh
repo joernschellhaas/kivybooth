@@ -48,7 +48,7 @@ link_to_ramdisk /var/lib/systemd/timesync/
 add_kernel_option() {
     grep "$1" /boot/cmdline.txt || sed -i "1s/$/ $1/" /boot/cmdline.txt
 }
-add_kernel_option fastboot
+add_kernel_option fsck.mode=skip
 add_kernel_option noswap
 
 # Create script to make system rw until next reboot
