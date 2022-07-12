@@ -1,14 +1,15 @@
 #:kivy 2.0.0
 #:import Direction base.Direction
+#:import _ i18n._
 
 CountdownScreen:
-    name: 'Countdown'
+    name: _('Countdown')
 
     AdaptiveBoxLayout:
         orientation: 'vertical'
 
         Label:
-            text: "Get ready..."
+            text: _("Macht euch bereit!")
             font_size: 60
 
         Label:
@@ -17,5 +18,5 @@ CountdownScreen:
             size_hint_y: 0.5
 
         KBButton:
-            text: 'Abort'
+            text: _('Abbrechen')
             on_release: app.go_to_screen("idle", Direction.BACK)  

@@ -3,7 +3,7 @@
 #:import Direction base.Direction
 
 ReviewScreen:
-    name: 'Your Picture'
+    name: _('Dein Foto')
 
     BoxLayout:
         orientation: 'vertical'
@@ -33,7 +33,7 @@ ReviewScreen:
                     Label:
                         text_size: self.size
                         valign: 'middle'
-                        text: _("Store a copy of the picture")
+                        text: _("Bild speichern")
                         size_hint_y: None
                 
             AnchorLayout:
@@ -41,11 +41,11 @@ ReviewScreen:
                 size_hint_y: None
                 ResizingCol_GridLayout:
                     KBIconButton:
-                        text: _("Discard")
+                        text: _("Verwerfen")
                         icon: "trash"
                         on_release: app.go_to_screen("idle", Direction.BACK)  
                     KBIconButton:
-                        text: _("Print")
+                        text: _("Drucken")
                         icon: "print"
                         default: True
                         on_release: app.go_to_screen("printing")  

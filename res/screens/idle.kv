@@ -1,11 +1,12 @@
 #:kivy 2.0.0
+#:import _ i18n._
 
 KBScreen:
-    name: 'Welcome'
+    name: _('Hallo!')
 
     KBButton:
         #height: '96dp'
-        text: 'Take picture'
+        text: _('Foto aufnehmen')
         font_size: 32
         on_release: app.go_to_screen("countdown")  
         default: True
