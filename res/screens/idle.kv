@@ -4,9 +4,15 @@
 KBScreen:
     name: _('Hallo!')
 
-    KBButton:
-        #height: '96dp'
-        text: _('Foto aufnehmen')
-        font_size: 32
-        on_release: app.go_to_screen("countdown")  
-        default: True
+    AdaptiveBoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            text: _("Fotobox")
+            font_size: 60
+
+        KBButton:
+            #height: '96dp'
+            text: _('Foto aufnehmen')
+            on_release: app.go_to_screen("countdown")  
+            default: True
