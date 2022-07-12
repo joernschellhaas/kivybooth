@@ -88,19 +88,19 @@ BoxLayout:
             size: self.size
             source: 'res/background.png'
 
-    ActionBar:
-
-        ActionView:
-            id: av
-            ActionPrevious:
-                with_previous: (False if sm.current_screen.name == 'button' else True) if sm.current_screen else False
-                title: app.current_title
-                on_release: app.go_hierarchy_previous()
-                size_hint_y: 1
-
-            KBMenuButton:
-                text: icon("lock")
-                on_release: app.go_to_screen("login")
+    #ActionBar:
+    #
+    #    ActionView:
+    #        id: av
+    #        ActionPrevious:
+    #            with_previous: (False if sm.current_screen.name == 'button' else True) if sm.current_screen else False
+    #            title: app.current_title
+    #            on_release: app.go_hierarchy_previous()
+    #            size_hint_y: 1
+    #
+    #        KBMenuButton:
+    #            text: icon("lock")
+    #            on_release: app.go_to_screen("login")
 
     ScreenManager:
         id: sm
