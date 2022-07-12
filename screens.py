@@ -25,7 +25,7 @@ def load():
 
 class CountdownScreen(KBScreen):
     def on_pre_enter(self, *args):
-        self.ids.counter_widget.text = "1"
+        self.ids.counter_widget.text = "10"
     def on_enter(self, *args):
         self.counter = Clock.schedule_interval(self.count, 1)
         light.set_brightness(0.5)
