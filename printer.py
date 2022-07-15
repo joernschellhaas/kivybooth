@@ -32,9 +32,6 @@ class Job:
             self.id = conn.printFile(printer, self.filename, 'kivybooth', {})# {'media': "Custom.{}x{}cm".format(width, height)}) 
             self.prev_atts = {}
 
-    def __del__(self):
-        self.cancel()
-
     def status(self):
         if emulation.active():
             return (JobStatus.DONE, 100)

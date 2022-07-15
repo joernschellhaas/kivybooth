@@ -3,12 +3,12 @@
 
 PrintingScreen:
     name: _('Drucken')
-
-    BoxLayout:
+    
+    AdaptiveBoxLayout:
         orientation: 'vertical'
 
         Label:
-            text: _("Drucken...")
+            text: _("Bild wird gedruckt...")
             font_size: 60
 
 #       Label:
@@ -19,4 +19,12 @@ PrintingScreen:
         ProgressBar:
             id: progress_bar
             max: 100
-    
+
+        Label:
+            text: _("Wenn das Bild fertig ist, kannst du es auf der Rückseite entnehmen.")
+
+        KBIconButton:
+            text: _("Nächstes Foto aufnehmen")
+            icon: "camera"
+            default: True
+            on_release: app.go_to_screen("countdown")  

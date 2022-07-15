@@ -52,21 +52,23 @@ class ReviewScreen(KBScreen):
         self.thumbnail = image.Thumbnail(app.last_photo.path)
         self.ids.photo.source = self.thumbnail.path
         self.ids.photo.reload()
+        app.store_job = app.last_photo.start_store()
     def on_pre_leave(self, *args):
-        app.last_photo.do_store = self.ids.store_allowed.active
+        pass
+        #app.last_photo.do_store = self.ids.store_allowed.active
 
 class PrintingScreen(KBScreen):
     def on_enter(self, *args):
         self.jobs = [printer.Job(app.last_photo.path)]
-        if app.last_photo.do_store: # Can not be accessed in on_pre_enter
-            self.jobs.append(app.last_photo.start_store())
+        #if app.last_photo.do_store: # Can not be accessed in on_pre_enter
+        #    self.jobs.append(app.last_photo.start_store())
         self.updater = Clock.schedule_interval(self.update, 0.5)
-        self.timeout = 60
+        self.timeout = 600
         self.runtime = 0
     def on_pre_leave(self, *args):
         self.updater.cancel()
-        for job in self.jobs:
-            job.cancel()
+        #for job in self.jobs:
+        #    job.cancel()
     def update(self, dt):
         self.runtime += dt
         if self.runtime >= self.timeout:
@@ -84,13 +86,14 @@ class PrintingScreen(KBScreen):
             self.updater.cancel()
             self.leave()
     def cancel(self):
-        for job in self.jobs:
-            job.cancel()
+        #for job in self.jobs:
+        #    job.cancel()
+        # Rather, continue printing in background
         self.jobs = []
         self.leave()
     def leave(self):
         self.updater.cancel()
-        Clock.schedule_once(lambda dt: app.go_to_screen("idle", Direction.REPLACE), 1)
+        Clock.schedule_once(lambda dt: app.go_to_screen("idle", Direction.REPLACE), 3)
         
 class LoginScreen(KBScreen):
     def on_enter(self, *args):
