@@ -25,15 +25,15 @@ ReviewScreen:
                 BoxLayout:
                     orientation: 'horizontal'
                     size_hint_y: None
-                    Switch:
-                        id: store_allowed
-                        active: True
-                        size_hint_x: None
-                        size_hint_y: None
+                    #Switch:
+                    #    id: store_allowed
+                    #    active: True
+                    #    size_hint_x: None
+                    #    size_hint_y: None
                     Label:
                         text_size: self.size
                         valign: 'middle'
-                        text: _("Bild speichern")
+                        text: _("Bild wurde gespeichert.")
                         size_hint_y: None
                 
             AnchorLayout:
@@ -41,9 +41,10 @@ ReviewScreen:
                 size_hint_y: None
                 ResizingCol_GridLayout:
                     KBIconButton:
-                        text: _("Verwerfen")
-                        icon: "trash"
-                        on_release: app.go_to_screen("idle", Direction.BACK)  
+                        text: _("Nicht drucken")
+                        icon: "times-circle"
+                        on_release: app.go_to_screen("idle", Direction.BACK)
+                        default: True 
                     KBIconButton:
                         text: _("Drucken")
                         icon: "print"
