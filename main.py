@@ -26,6 +26,7 @@ import os.path
 
 # Modules
 import camera
+import printer
 from res.fontawesome import *
 from base import *
 
@@ -80,6 +81,12 @@ class KivyBoothApp(App):
         sm = self.root.ids.sm
         sm.switch_to(self.screens[name], direction=direction.to_graphical())
         self.current_title = self.screens[name].name
+
+    def cancel_all_prints(self):
+        printer.cancel_all()
+
+    def start_print(self):
+        self.print_job = printer.Job(self.last_photo.path)
 
     def go_hierarchy_previous(self):
         if len(self.hierarchy) > 1:

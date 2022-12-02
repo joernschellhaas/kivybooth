@@ -57,13 +57,20 @@ class ReviewScreen(KBScreen):
         pass
         #app.last_photo.do_store = self.ids.store_allowed.active
 
+class RefillScreen(KBScreen):
+    def on_enter(self, *args):
+        self.updater = Clock.schedule_interval(self.update, 0.5)
+        self.runtime = 0
+    def update(self, dt):
+        status, _ = app.print_job.status()
+        if status != printer.JobStatus.NEED_MAINTENANCE:
+            app.go_to_screen("printing", Direction.REPLACE)
+    def on_pre_leave(self, *args):
+        self.updater.cancel()
+
 class PrintingScreen(KBScreen):
     def on_enter(self, *args):
-        self.jobs = [printer.Job(app.last_photo.path)]
-        #if app.last_photo.do_store: # Can not be accessed in on_pre_enter
-        #    self.jobs.append(app.last_photo.start_store())
         self.updater = Clock.schedule_interval(self.update, 0.5)
-        self.timeout = 600
         self.runtime = 0
     def on_pre_leave(self, *args):
         self.updater.cancel()
@@ -71,25 +78,14 @@ class PrintingScreen(KBScreen):
         #    job.cancel()
     def update(self, dt):
         self.runtime += dt
-        if self.runtime >= self.timeout:
-            self.cancel()
-            return
-        overall_progress = 100
-        for job in self.jobs:
-            status, progress = job.status()
-            progress = max(progress, overall_progress) # Use progress of slowest job
-            if status in [printer.JobStatus.DONE, printer.JobStatus.FAILED, True]:
-                self.jobs.remove(job)
-        overall_progress = min(overall_progress, 100 * self.runtime / self.timeout) # Consider timeout for progress
-        self.ids.progress_bar.value = overall_progress
-        if not self.jobs:
-            self.updater.cancel()
+        job = app.print_job
+        status, progress = job.status()
+        if status == printer.JobStatus.NEED_MAINTENANCE:
+            app.go_to_screen("refill")
+        elif status in [printer.JobStatus.DONE, printer.JobStatus.FAILED, printer.JobStatus.CANCELED]:
             self.leave()
+        self.ids.progress_bar.value = progress
     def cancel(self):
-        #for job in self.jobs:
-        #    job.cancel()
-        # Rather, continue printing in background
-        self.jobs = []
         self.leave()
     def leave(self):
         self.updater.cancel()

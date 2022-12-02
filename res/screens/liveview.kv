@@ -1,0 +1,22 @@
+#:kivy 2.0.0
+#:import Direction base.Direction
+#:import _ i18n._
+
+CountdownScreen:
+    name: _('Countdown')
+
+    AdaptiveBoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            text: _("Macht euch bereit!")
+            font_size: 60
+
+        Label:
+            id: counter_widget
+            font_size: 160
+            size_hint_y: 0.5
+
+        KBButton:
+            text: _('Abbrechen')
+            on_release: app.go_to_screen("idle", Direction.BACK)  

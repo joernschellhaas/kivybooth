@@ -18,6 +18,7 @@ class JobStatus(Enum):
     DONE = 2
     FAILED = 3
     CANCELED = 4
+    NEED_MAINTENANCE = 5
 
 
 class Job:
@@ -30,7 +31,8 @@ class Job:
             printer = first_printer()
             logger.info("Printing %s on %s", self.filename, printer)
             self.id = conn.printFile(printer, self.filename, 'kivybooth', {})# {'media': "Custom.{}x{}cm".format(width, height)}) 
-            self.prev_atts = {}
+            self.prev_atts = None
+            self.last_progress = None
 
     def status(self):
         if emulation.active():
@@ -40,7 +42,10 @@ class Job:
             if self.prev_atts != atts:
                 logger.debug("Job %d changed to %s", self.id, atts)
                 self.prev_atts = atts
+                self.last_progress = time.time()
             state = atts["job-state"]
+            if detect_maintenance_needed():
+                return (JobStatus.NEED_MAINTENANCE, atts["job-media-progress"])
             if state == 5:
                 return (JobStatus.PRINTING, atts["job-media-progress"])
             elif state == 9:
@@ -61,8 +66,15 @@ def first_printer():
     id, _ = next(iter(conn.getPrinters().items()))
     return id
 
+def first_job():
+    for id, _ in iter(conn.getJobs().items()):
+        atts = conn.getJobAttributes(id, ["job-state", "job-media-progress"])
+        state = atts["job-state"]
+        if state == 5:
+            return id
+    return None
 
-def print_image(filename, timeout=60):
+def print_image(filename, timeout=300):
     status = None
     job = Job(filename)
     logger.info("Started job with ID {}".format(job.id))
@@ -74,6 +86,31 @@ def print_image(filename, timeout=60):
         timeout -= 1
     logger.error("Job %d did not finish in expected time", job.id)
 
+def detect_maintenance_needed():
+    if not hasattr(detect_maintenance_needed, "prev_atts"):
+        detect_maintenance_needed.prev_atts = None
+    if not hasattr(detect_maintenance_needed, "last_progress"):
+        detect_maintenance_needed.last_progress = time.time()
+    id = first_job()
+    if id is None:
+        return False
+    atts = conn.getJobAttributes(id, ["job-state", "job-media-progress"])
+    if detect_maintenance_needed.prev_atts != atts:
+        logging.debug(f"Maintenance detection: First job (#{id}) status changed to {atts}")
+        detect_maintenance_needed.last_progress = time.time()
+    detect_maintenance_needed.prev_atts = atts
+    return atts["job-state"] == cups.IPP_JOB_PROCESSING and \
+        atts["job-media-progress"] < 20 and \
+        time.time() - detect_maintenance_needed.last_progress > 20
+
+def cancel_all():
+    for id, _ in iter(conn.getJobs().items()):
+        conn.cancelJob(id)
+
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--test", type=int, required=True, help="which test file to print")
+    args = parser.parse_args()
     logging.basicConfig(level=logging.DEBUG)
-    print_image("res/kivybooth-test.jpg")
+    print_image(f"res/kivybooth-test-{args.test}.jpg")

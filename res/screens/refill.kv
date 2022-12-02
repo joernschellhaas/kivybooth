@@ -1,0 +1,28 @@
+#:kivy 2.0.0
+#:import _ i18n._
+
+RefillScreen:
+    name: _('Papier leer')
+    
+    AdaptiveBoxLayout:
+        orientation: 'vertical'
+
+        Label:
+            text: _("Bitte Papier nachlegen.")
+            font_size: 60
+
+        Label:
+            text: _("Auf der Rückseite. Glänzende Seite nach vorne. Danach bitte den blauen Knopf am Drucker drücken.")
+            text_size: self.width * 0.8, None
+            halign: "center"
+
+        KBIconButton:
+            text: _("Alle Druckvorgänge abbrechen")
+            icon: "times-circle"
+            on_release: app.cancel_all_prints()
+
+        KBIconButton:
+            text: _("Nächstes Foto aufnehmen")
+            icon: "camera"
+            default: True
+            on_release: app.go_to_screen("countdown")  
